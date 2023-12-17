@@ -20,9 +20,8 @@ function buttonShow(im) {
     if (im.length === 0) {
       loadMore.hidden = true;
 
-      throw new Error(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
+      Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+     
     } else if (im.length > 0 && im.length < 40) {
       Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
@@ -50,7 +49,6 @@ const getImg = async currentPage => {
   const images = await response.data.hits;
   
   buttonShow(images);
-  // loadMore.hidden = false;
 
     return images.map(image => ({
       webformatURL: image.webformatURL,
@@ -66,13 +64,12 @@ const getImg = async currentPage => {
 
 
 
-
-
 const fetchAndRenderImg = async currentPage => {
 
   const images = await getImg(currentPage)
     .then()
-    .catch(error=> new error);
+    .catch(error => Notiflix.Notify.failure(error.message));
+  
     gallery.innerHTML += images
       .map(
         item => `
